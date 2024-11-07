@@ -303,6 +303,7 @@ namespace Phantom
                 S_windowText,
                 S_highlight,
                 S_highlightedText,
+                S_scrollbarGroove_disabled,
                 S_scrollbarGutter,
                 S_scrollbarSlider,
                 S_window_outline,
@@ -410,6 +411,7 @@ namespace Phantom
             colors[S_windowText] = pal.color(QPalette::WindowText);
             colors[S_highlight] = pal.color(QPalette::Highlight);
             colors[S_highlightedText] = pal.color(QPalette::HighlightedText);
+            colors[S_scrollbarGroove_disabled] = pal.color(QPalette::Active, QPalette::Window);
             colors[S_scrollbarGutter] = isLight ? Dc::gutterColorOf(pal) : Dc::darkGutterColorOf(pal);
             colors[S_scrollbarSlider] = isLight ? colors[S_button] : Dc::adjustLightness(colors[S_window], 0.2);
 
@@ -3533,7 +3535,8 @@ void BaseStyle::drawComplexControl(ComplexControl control,
 
         // Groove/gutter/trench area
         if (scrollBar->subControls & SC_ScrollBarGroove) {
-            painter->fillRect(scrollBarGroove, swatch.color(S_window));
+            painter->fillRect(scrollBarGroove,
+                (option->state & State_Enabled) ? swatch.color(S_window) : swatch.color(S_scrollbarGroove_disabled));
         }
 
         // Slider thumb
