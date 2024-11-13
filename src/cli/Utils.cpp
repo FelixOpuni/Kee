@@ -43,6 +43,11 @@ namespace Utils
     QTextStream STDIN;
     QTextStream DEVNULL;
 
+#ifdef Q_OS_WIN
+    UINT origCodePage = GetConsoleCP();
+    UINT origOutputCodePage = GetConsoleOutputCP();
+#endif
+
     void setDefaultTextStreams()
     {
         auto fd = new QFile();
@@ -70,6 +75,14 @@ namespace Utils
         // but the console code-page isn't automatically changed to match.
         SetConsoleCP(GetACP());
         SetConsoleOutputCP(GetACP());
+#endif
+    }
+
+    void resetTextStreams()
+    {
+#ifdef Q_OS_WIN
+        SetConsoleCP(origCodePage);
+        SetConsoleOutputCP(origOutputCodePage);
 #endif
     }
 
