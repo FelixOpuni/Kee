@@ -206,6 +206,7 @@ int main(int argc, char** argv)
         }
         mainWindow.openDatabase(filename, password, parser.value(keyfileOption));
     }
+    Utils::resetTextStreams();
 
     // start minimized if configured
     if (config()->get(Config::GUI_MinimizeOnStartup).toBool()) {

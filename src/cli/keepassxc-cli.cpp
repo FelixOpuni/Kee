@@ -217,10 +217,13 @@ int main(int argc, char** argv)
         if (parser.isSet("version")) {
             // Switch to parser.showVersion() when available (QT 5.4).
             out << KEEPASSXC_VERSION << Qt::endl;
+            Utils::resetTextStreams();
             return EXIT_SUCCESS;
-        } else if (parser.isSet(debugInfoOption)) {
+        }
+        if (parser.isSet(debugInfoOption)) {
             QString debugInfo = Tools::debugInfo().append("\n").append(Crypto::debugInfo());
             out << debugInfo << Qt::endl;
+            Utils::resetTextStreams();
             return EXIT_SUCCESS;
         }
         // showHelp exits the application immediately.
@@ -229,6 +232,7 @@ int main(int argc, char** argv)
 
     QString commandName = parser.positionalArguments().at(0);
     if (commandName == "open") {
+        Utils::resetTextStreams();
         return enterInteractiveMode(arguments);
     }
 
@@ -236,6 +240,7 @@ int main(int argc, char** argv)
     if (!command) {
         err << QObject::tr("Invalid command %1.").arg(commandName) << Qt::endl;
         err << parser.helpText();
+        Utils::resetTextStreams();
         return EXIT_FAILURE;
     }
 
@@ -253,5 +258,6 @@ int main(int argc, char** argv)
     __lsan_disable();
 #endif
 
+    Utils::resetTextStreams();
     return exitCode;
 }
